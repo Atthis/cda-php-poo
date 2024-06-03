@@ -1,0 +1,16 @@
+{
+    "name": "atthis/chirposphere",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Atthis\\Chirposphere\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Cedric Blanchard",
+            "email": "blanchard.ced@gmail.com"
+        }
+    ],
+    "require": {}
+}
