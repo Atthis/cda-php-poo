@@ -18,6 +18,6 @@
     $chirpsRepo = new ChirpRepository($db);
 
     var_dump($chirpsRepo->getAllChirps());
-  ?>
+   ?>
 </body>
 </html>
