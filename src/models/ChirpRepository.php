@@ -1,7 +1,16 @@
 <?php
 
-  require_once 'IChirpRepository.php';
-  require_once  'Chirp.php';
+  namespace Models;
+
+  use Models\IChirpRepository;
+  use Models\Chirp;
+
+  use DateTime;
+  use PDO;
+  use PDOException;
+
+  // require_once 'IChirpRepository.php';
+  // require_once  'Chirp.php';
 
   class ChirpRepository implements IChirpRepository
   {
@@ -12,12 +21,14 @@
       $this->db = $db;
     }
 
-    private function generateChirpObject (int $id, string $message, string $author, DateTime $publishDate, int $likes)
+    private function generateChirpObject (int $id, string $message, string $author, string $publishDate, int|null $likes)
     {
-      return new Chirp($id, $message, $author, $publishDate, $likes);
+      $publishDateToDateTime = new DateTime($publishDate);
+
+      return new Chirp($id, $message, $author, $publishDateToDateTime, $likes);
     }
 
-    public function getAllChirps()
+    public function getAll()
     {
       try {
         $request = $this->db->prepare("
@@ -38,7 +49,7 @@
       }
     }
 
-    public function getChirpByID(int $id)
+    public function getByID(int $id)
     {
       try {
         $request = $this->db->prepare("
@@ -49,6 +60,34 @@
 
         $request->execute(array(
           'id' => $id
+        ));
+        
+        $chirp = $request->fetch(PDO::FETCH_OBJ);
+
+        if(empty($chirp)) {
+          return null;
+        }
+
+        $data = $this->generateChirpObject($chirp->id, $chirp->message, $chirp->author, $chirp->publishDate, $chirp->likes);
+
+        return $data;
+      } catch(PDOException $err) {
+        echo $err->getMessage();
+      }
+    }
+
+    public function create(Chirp $chirp)
+    {
+      try {
+        $request = $this->db->prepare("
+          INSERT INTO chirp (message, author)
+          VALUES (:message, :author)
+          RETURNING id
+        ");
+
+        $request->execute(array(
+          'message' => $chirp->getMessage(),
+          'author' => $chirp->getAuthor()
         ));
         
         $chirp = $request->fetch(PDO::FETCH_OBJ);

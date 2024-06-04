@@ -3,7 +3,9 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Atthis\\Chirposphere\\": "src/"
+            "App\\": "src/",
+            "Controllers\\": "src/controllers/",
+            "Models\\": "src/models/"
         }
     },
     "authors": [

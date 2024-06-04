@@ -6,5 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Atthis\\Chirposphere\\' => array($baseDir . '/src'),
+    'Models\\' => array($baseDir . '/src/models'),
+    'Controllers\\' => array($baseDir . '/src/controllers'),
+    'App\\' => array($baseDir . '/src'),
 );
